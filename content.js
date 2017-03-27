@@ -42,8 +42,8 @@ chrome.runtime.onMessage.addListener(
 		video.style.marginLeft = "0px";
 
 		//Change the resolution of the video to fit the browser
-		video2.style.width = "100%";
-		video2.style.height = "100%";
+		video2.style.width = "100vw";
+		video2.style.height = "100vh";
 
 		//Change the size of the controls to fit the browser
 		//Remove the offset
@@ -77,8 +77,8 @@ chrome.runtime.onMessage.addListener(
 
 		//Set the video back to the default dimensions
 		//Remove the offset of the video
-		video2.style.width = "1280px";
-		video2.style.height = "720px";
+		video2.style.width = "100%";
+		video2.style.height = "100%";
 		video2.style.left = "0px";
 
 		//Set the width of the controls to the size of the video
