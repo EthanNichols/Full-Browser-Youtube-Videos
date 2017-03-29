@@ -32,18 +32,40 @@ function getElements() {
 	topBar2 = document.getElementById("masthead-positioner-height-offset");
 	
 	//Set the elements for the video and the controls
+	//Create a full browser button
 	video = document.getElementById("player-api");
 	videoControls = document.getElementsByClassName("ytp-right-controls")[0];
-	fullBrowserButton = document.getElementsByClassName("ytp-fullscreen-button ytp-button")[0].cloneNode(true);
+	fullBrowserButton = createBrowserButton();
 
-	//Create a new button in the video controls
-	videoControls.appendChild(fullBrowserButton);
+	//Place the button before the full screen button
+	videoControls.insertBefore(fullBrowserButton, document.getElementsByClassName("ytp-fullscreen-button ytp-button")[0]);
 
 	//Add listeners to all of the video size changers
 	//Set the size of the video depending on which button is pressed
 	fullBrowserButton.addEventListener("click", testBrowserMode);
 	document.getElementsByClassName("ytp-size-button ytp-button")[0].addEventListener("click", OriginalBrowser);
     document.getElementsByClassName("ytp-fullscreen-button ytp-button")[0].addEventListener("click", OriginalBrowser);
+}
+
+function createBrowserButton() {
+	//Create the button
+	var button = document.createElement("button");
+
+	//Set the class of the button to be a 'youtube player button'
+	//Set the title of the button that will be displayed
+	button.className = "ytp-button";
+	button.title = "Full browser";
+
+	//Create an image inside of the button
+	//Set the image to be drawn
+	//Set the width and height of the image to the button's size
+	button.append(document.createElement("img"));
+	button.children[0].src = chrome.extension.getURL("Images/FullBrowserButton.png");
+	button.children[0].style.width = "100%";
+	button.children[0].style.height = "100%";
+
+	//Return the button
+	return button;
 }
 
 function testBrowserMode() {
