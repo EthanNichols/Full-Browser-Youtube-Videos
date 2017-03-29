@@ -1,16 +1,62 @@
-//The entire web page
-var htmlBody = document.getElementsByTagName("html")[0];
 
-//The banner for YouTube (Searchbar + YouTube button_)
-var topBar = document.getElementById("masthead-positioner");
-var topBar2 = document.getElementById("masthead-positioner-height-offset");
+var testURL = setInterval( function() {
+	//Test for a youtube browser that is playing a video
+	//Set all of the elements needed for the page
+	//Stop looping through the test
+	if (window.location.href.includes("watch")) {
+		getElements();
+		clearInterval(testURL);
+	}
+}, 1000);
+
+//The entire web page
+//The banner for YouTube (Searchbar + YouTube button)
+var htmlBody;
+var topBar;
+var topBar2;
 
 //The video that will be playing
-var video = document.getElementById("player-api");
+//The controls for the video
+//The full browser mode button
+var video;
+var videoControls;
+var fullBrowserButton;
 
 //Whether the video is in full browser mode or not
 var fullBrowser = false;
 
+function getElements() {
+	//Set the elements for the page and the top bar
+	htmlBody = document.getElementsByTagName("html")[0];
+	topBar = document.getElementById("masthead-positioner");
+	topBar2 = document.getElementById("masthead-positioner-height-offset");
+	
+	//Set the elements for the video and the controls
+	video = document.getElementById("player-api");
+	videoControls = document.getElementsByClassName("ytp-right-controls")[0];
+	fullBrowserButton = document.getElementsByClassName("ytp-fullscreen-button ytp-button")[0].cloneNode(true);
+
+	//Create a new button in the video controls
+	videoControls.appendChild(fullBrowserButton);
+
+	//Add listeners to all of the video size changers
+	//Set the size of the video depending on which button is pressed
+	fullBrowserButton.addEventListener("click", testBrowserMode);
+	document.getElementsByClassName("ytp-size-button ytp-button")[0].addEventListener("click", OriginalBrowser);
+    document.getElementsByClassName("ytp-fullscreen-button ytp-button")[0].addEventListener("click", OriginalBrowser);
+}
+
+function testBrowserMode() {
+	//Test for the state of the browser mode
+	//Set the size of the video relative to the state
+	if (!fullBrowser) {
+		FullBrowser();
+	} else {
+		OriginalBrowser();
+	}
+}
+
+//Make the video fullscreen
 function FullBrowser() {
 	//The video that is on the screen
     //The controls for the video at the bottom
@@ -46,6 +92,7 @@ function FullBrowser() {
 	fullBrowser = true;
 }
 
+//Make the video back to the original size
 function OriginalBrowser() {
 
 	//The video that is on the screen
@@ -87,21 +134,10 @@ function OriginalBrowser() {
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if( request.message === "clicked_browser_action" ) {
-      
-      //Test if the video isn't full browser mode
-      if (fullBrowser == false &&
-      window.location.href.includes("watch")) {
 
-      	//Set the video to display on the full browser
-      	//Add a listener to the video mode and run the original size when it's clicked
-      	FullBrowser();
-        document.getElementsByClassName("ytp-size-button ytp-button")[0].addEventListener("click", OriginalBrowser);
-
-	  //Test if the video is in full browser mode
-      } else {
-
-      	//Return the video back to the original size
-      	OriginalBrowser();
+      if (window.location.href.includes("watch")) {
+      	//Check the state of the video
+      	testBrowserMode();
       }
     }
   }
