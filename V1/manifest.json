@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+  "name": "Full Browser Youtube Videos",
+  "version": "1.2",
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*",
+        "http://www.youtube.com/*"
+      ],
+      "js": ["jquery.js", "content.js"]
+    }
+  ],
+
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+
+  "web_accessible_resources": [
+    "Images/*.png"
+  ]
+}
