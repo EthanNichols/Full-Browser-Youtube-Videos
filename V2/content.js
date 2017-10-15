@@ -37,9 +37,7 @@ function getElements() {
 	pageContent = document.querySelector("#page-manager");
 
 	mediaQuerier = pageContent.querySelectorAll("*")[0].querySelectorAll("*")[0];
-
-	alert(mediaQuerier.attributes[0]);
-
+	
 	//Set the elements for the video and the controls
 	//Create a full browser button
 	//The video that is on the screen
@@ -81,8 +79,8 @@ function createBrowserButton() {
 	button.append(document.createElement("div"));
 
 	Object.assign(button.querySelector("div").style, {
-		backgroundColor: "black",
-		opacity: ".8",
+		backgroundColor: "#1f1f1f",
+		opacity: "1",
 		borderRadius: "2px",
 		height: "25px",
 		position: "absolute",
@@ -91,14 +89,16 @@ function createBrowserButton() {
 		visibility: "hidden",
 		textAlign: "center",
 		lineHeight: "25px",
+		fontFamily: '"YouTube Noto",Roboto,Arial,Helvetica,sans-serif',
+		fontWeight: "500",
+		fontSize: "108%",
 		paddingLeft: "9px",
 		paddingRight: "9px"
 	});
 
 	button.querySelector("div").append(document.createElement("p"));
-	Object.assign(button.querySelector("div").querySelector("p").style, {
-		fontWeight: "bold"
-	});
+
+	button.querySelector("div").querySelector("p").innerHTML = "Full Browser";
 
 	//Return the button
 	return button;
