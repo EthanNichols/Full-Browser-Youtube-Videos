@@ -1,7 +1,9 @@
 # Full-Browser-Youtube-Videos
 Chrome Extension to allow users to make any YouTube video the size of the current browser
 
-## Installation
+## [Link to Chrome Extension Download](https://chrome.google.com/webstore/detail/full-browser-youtube-vide/kkmknkahhhjhfacgbjlnmeiplbadlpia?hl=en)
+
+## Developer Installation
 1. Download the ZIP file 
 2. Extract the ZIP file
 3. Go to 'chrome://extensions/' in chrome
@@ -22,5 +24,3 @@ Chrome Extension to allow users to make any YouTube video the size of the curren
 
 ## License
 This extension is free for anyone to use, edit, or distribute
-
-**Please Give credit to everyone in the 'Credits' section**

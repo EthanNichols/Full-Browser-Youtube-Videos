@@ -1,7 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Full Browser Youtube Videos",
-  "version": "2",
+  "short_name": "FBYTV",
+  "version": "2.0.1",
   "background": {
     "scripts": ["background.js"]
   },

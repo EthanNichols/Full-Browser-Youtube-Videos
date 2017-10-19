@@ -42,7 +42,11 @@ function getElements() {
 	//Create a full browser button
 	//The video that is on the screen
     //The controls for the video at the bottom
-	videoBackground = document.querySelectorAll("#player")[1];
+    document.querySelectorAll("#player").forEach(function(element) {
+    	if (element.className == "style-scope ytd-watch") {
+    		videoBackground = element;
+    	}
+    });
 	video = document.querySelector(".video-stream, html5-main-video");
 	controls = document.querySelector(".ytp-chrome-bottom");
 	videoControls = document.querySelector(".ytp-right-controls");
@@ -67,6 +71,7 @@ function createBrowserButton() {
 	//Set the class of the button to be a 'youtube player button'
 	//Set the title of the button that will be displayed
 	button.className = "ytp-button";
+	button.id = "FullBrowser";
 
 	//Create an image inside of the button
 	//Set the image to be drawn
@@ -109,10 +114,11 @@ function hover(hovering) {
 		fullBrowserButton.children[1].style.visibility = 'visible';
 
 		if (!fullBrowser) {
-			fullBrowserButton.children[1].children.innerHTML = "Full browser";
+			fullBrowserButton.children[1].children[0].innerHTML = "Full browser";
 		} else {
-			fullBrowserButton.children[1].children.innerHTML = "Theater mode";
+			fullBrowserButton.children[1].children[0].innerHTML = "Theater mode";
 		}
+
 	} else {
 		fullBrowserButton.children[1].style.visibility = 'hidden';
 	}
@@ -124,17 +130,25 @@ function testBrowserMode() {
 		document.querySelector(".ytp-size-button, ytp-button").click();
 	}
 
+	if (videoControls.querySelector(".ytp-fullscreen-button, ytp-button").title == "Exit full screen") {
+		videoControls.querySelector(".ytp-fullscreen-button, ytp-button").click();
+	}
+
 	//Test for the state of the browser mode
 	//Set the size of the video relative to the state
 	if (!fullBrowser) {
 		FullBrowser();
 
 		fullBrowserButton.children[0].src = chrome.extension.getURL("Images/TheaterModeButton.png");
+		fullBrowserButton.children[1].children[0].innerHTML = "Theater mode";
+
 
 	} else {
 		OriginalBrowser();
 
 		fullBrowserButton.children[0].src = chrome.extension.getURL("Images/FullBrowserButton.png");
+		fullBrowserButton.children[1].children[0].innerHTML = "Full Browser";
+
 	}
 }
 
