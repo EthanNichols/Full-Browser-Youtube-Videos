@@ -4,7 +4,7 @@ let testURL = setInterval( function() {
 	//Set all of the elements needed for the page
 	//Stop looping through the test
 	if (window.location.href.includes("watch")) {
-		getElements();
+		GetElements();
 		clearInterval(testURL);
 	}
 }, 1000);
@@ -30,7 +30,7 @@ let mediaQuerier;
 //Whether the video is in full browser mode or not
 let fullBrowser = false;
 
-function getElements() {
+function GetElements() {
 	//Set the elements for the page and the top bar
 	htmlBody = document.querySelector("html");
 	topBar = document.querySelector("#masthead-container");
@@ -45,26 +45,27 @@ function getElements() {
     document.querySelectorAll("#player").forEach(function(element) {
     	if (element.className == "style-scope ytd-watch") {
     		videoBackground = element;
+    		videoBackground.addEventListener("mouseover", UpdateButton);
     	}
     });
 	video = document.querySelector(".video-stream, html5-main-video");
 	controls = document.querySelector(".ytp-chrome-bottom");
 	videoControls = document.querySelector(".ytp-right-controls");
-	fullBrowserButton = createBrowserButton();
+	fullBrowserButton = CreateBrowserButton();
 
 	//Place the button before the full screen button
 	videoControls.insertBefore(fullBrowserButton, videoControls.querySelector(".ytp-fullscreen-button, ytp-button"));
 
 	//Add listeners to all of the video size changers
 	//Set the size of the video depending on which button is pressed
-	fullBrowserButton.addEventListener("click", testBrowserMode);
-	fullBrowserButton.addEventListener("mouseover", function() {hover(true)});
-	fullBrowserButton.addEventListener("mouseout", function(){hover(false)});
+	fullBrowserButton.addEventListener("click", TestBrowserMode);
+	fullBrowserButton.addEventListener("mouseover", function() {Hover(true)});
+	fullBrowserButton.addEventListener("mouseout", function(){Hover(false)});
 	videoControls.querySelector(".ytp-size-button, ytp-button").addEventListener("click", OriginalBrowser);
     videoControls.querySelector(".ytp-fullscreen-button, ytp-button").addEventListener("click", OriginalBrowser);
 }
 
-function createBrowserButton() {
+function CreateBrowserButton() {
 	//Create the button
 	let button = document.createElement("div");
 
@@ -109,7 +110,7 @@ function createBrowserButton() {
 	return button;
 }
 
-function hover(hovering) {
+function Hover(hovering) {
 	if (hovering) {
 		fullBrowserButton.children[1].style.visibility = 'visible';
 
@@ -124,7 +125,17 @@ function hover(hovering) {
 	}
 }
 
-function testBrowserMode() {
+//Change the image of the Full browser buttong depending on the mode
+function UpdateButton() {
+	//Display the theater mode image if the video is in full browser mode
+	if (fullBrowser) {
+		fullBrowserButton.children[0].src = chrome.extension.getURL("Images/TheaterModeButton.png");
+	} else {
+		fullBrowserButton.children[0].src = chrome.extension.getURL("Images/FullBrowserButton.png");
+	}
+}
+
+function TestBrowserMode() {
 
 	if (document.querySelector(".ytp-size-button, ytp-button").title != "Default view") {
 		document.querySelector(".ytp-size-button, ytp-button").click();
@@ -148,7 +159,6 @@ function testBrowserMode() {
 
 		fullBrowserButton.children[0].src = chrome.extension.getURL("Images/FullBrowserButton.png");
 		fullBrowserButton.children[1].children[0].innerHTML = "Full Browser";
-
 	}
 }
 
@@ -237,7 +247,7 @@ chrome.runtime.onMessage.addListener(
 
       if (window.location.href.includes("watch")) {
       	//Check the state of the video
-      	testBrowserMode();
+      	TestBrowserMode();
       }
     }
   }
