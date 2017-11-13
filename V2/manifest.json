@@ -10,10 +10,9 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.youtube.com/*",
-        "http://www.youtube.com/*"
+        "<all_urls>"
       ],
-      "js": ["jquery.js", "content.js"]
+      "js": ["jquery.js", "content.js", "BrowserEmbed/Content.js"]
     }
   ],
 

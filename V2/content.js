@@ -3,7 +3,7 @@ let testURL = setInterval( function() {
 	//Test for a youtube browser that is playing a video
 	//Set all of the elements needed for the page
 	//Stop looping through the test
-	if (window.location.href.includes("watch")) {
+	if (window.location.href.includes("youtube.com/watch")) {
 		GetElements();
 		clearInterval(testURL);
 	}
