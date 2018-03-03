@@ -1,0 +1,37 @@
+{
+    "manifest_version": 2,
+    "name": "Youtube Extended",
+    "short_name": "YTE",
+    "version": "2.0.2",
+    
+    "background": {
+    "scripts": ["Background.js"]
+    },
+
+    "content_scripts": [
+    {
+        "matches": ["*://*.youtube.com/*"],
+        
+        "js": ["jquery.js", "Classes.js", "DetectPage.js", "VideoControls.js", "VideoPlaylist/Video.js"]
+    }
+  ],
+    
+    "icons": {
+        "16": "Images/Icons/icon16.png",
+        "48": "Images/Icons/icon48.png",
+        "128": "Images/Icons/icon128.png"
+    },
+
+    "browser_action": {
+        "default_icon": "Images/Icons/icon128.png"
+    },
+    
+    "permissions": [
+        "tabs"
+    ],
+
+    "web_accessible_resources": [
+        "Images/*.png",
+        "Images/*/*.png"
+    ]
+}
