@@ -1,9 +1,2 @@
-app-drawer id=guide { bottom: 25%; }
-
-div id=contentContainer { padding: 0px; }
-
-ytd-app {
-	width: 80%;
-	left: 20%;
-	right: 0px;
-}
+This will allow any youtube video link clicked to link to a videoID that I have in the playlist
+thumbnail.data.commandMetadata.webCommandMetadata.url = "/watch?v=[VIDEOID]";
