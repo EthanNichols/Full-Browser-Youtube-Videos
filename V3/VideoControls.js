@@ -100,5 +100,10 @@ function SetupButtonBases() {
 function CreateControlButton(id, title, imageURL) {
     let newButton = new VideoControlButton(baseButton.cloneNode(true), id, title, imageURL);
     
-    videoSizeButton.parentElement.appendChild(newButton.element);
+    //TEMP
+    //TODO
+    //This will take another parameter
+    //It will allow the new button to be appended
+    //To the left or the right controls
+    //videoSizeButton.parentElement.appendChild(newButton.element);
 }

@@ -1,3 +1,13 @@
+///
+/// Ethan Nichols
+/// Ethan.Thomas.Nichols@gmail.com
+/// 3 / 2 / 2018
+///
+/// This script is for the video iframe
+/// Allowing the user to search for other videos while watching the current video
+/// This script should only mess with data about the video iframe
+///
+
 "use strict"
 
 //Iframe that holds the video that doesn't stop playing

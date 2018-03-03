@@ -1,3 +1,12 @@
+///
+/// Ethan Nichols
+/// Ethan.Thomas.Nichols@gmail.com
+/// 3 / 2 / 2018
+///
+/// This script holds all the classes needed for the extension
+/// Classes should reduce the cludder code in other scripts
+/// Class objects should stay mostly contained and control themselves
+///
 "use strict"
 
 ///Class for new video control buttons

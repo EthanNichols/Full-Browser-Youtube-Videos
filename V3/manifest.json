@@ -12,7 +12,7 @@
     {
         "matches": ["*://*.youtube.com/*"],
         
-        "js": ["jquery.js", "Classes.js", "DetectPage.js", "VideoControls.js", "VideoPlaylist/Video.js"]
+        "js": ["jquery.js", "Classes.js", "DetectPage.js", "VideoControls.js", "VideoPlaylist/VideoOverlay.js", "VideoPlaylist/Video.js"]
     }
   ],
     
