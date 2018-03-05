@@ -105,5 +105,5 @@ function CreateControlButton(id, title, imageURL) {
     //This will take another parameter
     //It will allow the new button to be appended
     //To the left or the right controls
-    //videoSizeButton.parentElement.appendChild(newButton.element);
+    videoSizeButton.parentElement.appendChild(newButton.element);
 }

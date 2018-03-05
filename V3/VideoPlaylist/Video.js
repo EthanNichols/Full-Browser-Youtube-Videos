@@ -55,8 +55,8 @@ function GetVideoPageElements() {
     iframeVideo.style.bottom = "0px";
     iframeVideo.style.left = "0px";
     iframeVideo.style.position = "fixed";
-    iframeVideo.style.width = "20%";
-    iframeVideo.style.height = "25%";
+    iframeVideo.style.width = "373px";
+    iframeVideo.style.height = "210px";
     iframeVideo.style.border = "none";
     
     //TEMP

@@ -97,8 +97,16 @@ function OverlayClick() {
     
     //Get the url data for the link
     let localURL = linkElement.pathname + linkElement.search;
+    let imageSRC = linkElement.querySelector("img").src;
 
-    console.log(localURL);
+    let parentCheck = linkElement;
+    while (!parentCheck.querySelector("#video-title")) {
+        parentCheck = parentCheck.parentElement;
+    }
+    
+    let name = parentCheck.querySelector("#video-title").innerHTML;
+    
+    AddToQueue(imageSRC, name, URL);
 }
 
 /// Hides the overlay buttons from the document

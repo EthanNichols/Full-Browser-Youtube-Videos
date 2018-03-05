@@ -21,6 +21,7 @@ let testURL = setInterval( function() {
         
         GetControlElements();
         OverlayUpdate();
+        CreateCanvas();
         GetVideoPageElements();
         
         clearInterval(testURL);
