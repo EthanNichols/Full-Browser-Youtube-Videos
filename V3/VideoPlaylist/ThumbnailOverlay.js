@@ -106,7 +106,7 @@ function OverlayClick() {
     
     let name = parentCheck.querySelector("#video-title").innerHTML;
     
-    AddToQueue(imageSRC, name, URL);
+    AddToQueue(imageSRC, name, localURL);
 }
 
 /// Hides the overlay buttons from the document

@@ -14,19 +14,12 @@
 let iframeVideo;
 
 //Create the Iframe to hold the video
-function SetVideo(autoplay) {
-    
-    //If there is no video, set the src to a embedded youtube video
-    if (!document.URL.includes("watch")) {
-        iframeVideo.src = "https://www.youtube.com/embed/";
-        return;
-    }
+function SetVideo(link, autoplay = 0) {
     
     //Set the starting embedded video source
     let src = "https://www.youtube.com/embed/";
     
-    //Add the video ID to the source
-    src += document.URL.split('=')[1].substr(0, 11);
+    src += link;
 
     //Add the autoplay aspect to the video
     src += "?autoplay=" + autoplay;
@@ -58,10 +51,4 @@ function GetVideoPageElements() {
     iframeVideo.style.width = "373px";
     iframeVideo.style.height = "210px";
     iframeVideo.style.border = "none";
-    
-    //TEMP
-    console.log("Created Video");
-    
-    //Set the video that will play in the iframe
-    SetVideo(0);
 }
