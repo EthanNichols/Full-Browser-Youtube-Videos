@@ -14,10 +14,12 @@ Chrome Extension to allow users to make any YouTube video the size of the curren
 8. Uncheck the 'Developer mode' box at the top of the page
 
 ## Usage
-1. Go to a YouTube video
-2. Click 'Theater Mode' for the video
-3. Click the 'Full Browser Youtube Video' extension button
-4. To exit 'Full Browser Mode' click the extension button again
+1. Go to a YouTube
+2. Hover over a thumbnail of a video
+3. Click the '+' button next to the 'Watch Later' button
+4. A playlist in the lower left hand corner will appear
+5. To play a video in the playlist click one of the videos (The bottom video only work right now)
+6. Search around YouTube while the video you selected continues to play
 
 ## Credits
 **Ethan Nichols** : Lead Developer
