@@ -7,6 +7,7 @@
 /// Allowing easy access to the video controls
 /// As well as creating new controls for the video
 ///
+
 "use strict"
 
 //Parent of the controls
@@ -99,6 +100,9 @@ function SetupButtonBases() {
 ///imageURL - The location of the image to set on the button
 function CreateControlButton(id, title, imageURL) {
     let newButton = new VideoControlButton(baseButton.cloneNode(true), id, title, imageURL);
+    
+    
+    if (!videoSizeButton.parentElement) {return;}
     
     //TEMP
     //TODO

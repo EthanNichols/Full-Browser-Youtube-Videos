@@ -1,3 +1,13 @@
+///
+/// Ethan Nichols
+/// Ethan.Thomas.Nichols@gmail.com
+/// 3 / 2 / 2018
+///
+/// This script is for the pseudo playlist
+/// This script displays the videos in the playlist
+/// This script adds the functionality of the playlist
+///
+
 "use strict"
 
 //Queue of videos that will be watched
@@ -5,20 +15,26 @@ let videoQueue = [];
 
 //The canvas and 2d context
 let canvasPlaylist;
-let canvasCtx
+let canvasCtx;
 
-//Video that has been added to the queue
+let yOffset = 0;
+
+///Video that has been added to the queue
 class QueuedVideo {
     
     //Create the video
     constructor(imageSRC, name, URL) {
+        
+        //Set information about the playlist button
         this.image = new Image();
         this.image.src = imageSRC;
         this.name = name;
         this.URL = URL;
         
+        //Distance between items in the playlist button
         this.padding = 1;
         
+        //The position and size of the button
         this.x = 0;
         this.y = 0;
         this.width = 373;
@@ -28,24 +44,23 @@ class QueuedVideo {
     //Display the video on the canvas
     display(ctx, queuePos) {
         
-        //Display the image thumbnail
-        ctx.drawImage(this.image, this.padding, this.height * queuePos + this.padding, (this.height - this.padding * 2) * 1.8, this.height - this.padding * 2);
+        this.y = this.height * queuePos - yOffset;
         
-        this.y = this.height * queuePos;
+        //Display the image thumbnail
+        ctx.drawImage(this.image, this.padding, this.y + this.padding, (this.height - this.padding * 2) * 1.8, this.height - this.padding * 2);
         
         //Display the name of the video
         ctx.fillStyle = "white";
         ctx.font = "16px 'YouTube Noto'";
-        ctx.fillText(this.name, (this.height - this.padding * 2) * 1.9, this.height * queuePos + this.padding + 14);
+        ctx.fillText(this.name, (this.height - this.padding * 2) * 1.9, this.y + this.padding + 14);
     }
     
+    //Test if the button is clicked
     testClick(pos) {
         
-        console.log(this.y);
-        
+        //Set the video url if the button is clicked
         if (pos.x > this.x && pos.x < this.x + this.width &&
            pos.y > this.y && pos.y < this.y + this.height) {
-            console.log(this.name);
             SetVideo(this.URL, 1);
         }
     }
@@ -75,11 +90,23 @@ function CreateCanvas() {
     canvasPlaylist.height = 400;
     canvasCtx = canvasPlaylist.getContext("2d");
     
+    canvasPlaylist.onclick = PlaylistClick;
+    canvasPlaylist.onmousewheel = PlaylistScroll;
+    
+    //Remove scrolling when hovering over the playlist canvas
+    canvasPlaylist.onmousemove = function() {
+        document.querySelector("body").style.overflow = "hidden";
+    }
+    //Enable hovering when the mouse leaves the canvas
+    canvasPlaylist.onmouseout = function() {
+        document.querySelector("body").style.overflow = null;
+    }
+    
     //Run the update canvas function
     UpdateCanvas();
 }
 
-//Add a video to the queue of videos
+///Add a video to the queue of videos
 function AddToQueue(imageSRC, name, URL) {
     
     //Get the video if from the URL provided
@@ -105,13 +132,58 @@ function AddToQueue(imageSRC, name, URL) {
     videoQueue.push(new QueuedVideo(imageSRC, name, URL));
 }
 
+///Get the mouse position relative to the element
 function MousePosition(canvas, evt) {
+    
+    //Get the rectangle of the element
     let rect = canvasPlaylist.getBoundingClientRect();
     
+    //Return the relative X and Y position
     return {
         x: evt.clientX - rect.left,
         y: evt.clientY - rect.top
     };
+}
+
+///Run when the playlist canvas is clicked
+function PlaylistClick(e) {
+    
+    //Get the mouse position
+    let mousePos = MousePosition(canvasPlaylist, e);
+    
+    //Test all the playlist buttons if they've been clicked
+    for (let i=0; i<videoQueue.length; i++) {
+        videoQueue[i].testClick(mousePos);
+    }
+}
+
+//Allow scrolling through the playlist to see hidden videos
+function PlaylistScroll(e) {
+    
+    //Disable scrolling for the page
+    document.querySelector("body").style.overflow = "hidden";
+    
+    //If the playlist doesn't have 5 videos don't scroll and set no offset
+    if (videoQueue.length <= 5) {
+        yOffset = 0;
+        return;
+    }
+
+    //Get the direction the mouse is scrolling
+    let dir = e.deltaY / Math.abs(e.deltaY);
+    
+    //Set the new offset of the videos
+    yOffset += dir * 5;
+    
+    //Restrict the scroll to the length of videos in the playlist
+    if (yOffset >= (videoQueue.length - 5) * videoQueue[0].height) {
+        yOffset = (videoQueue.length - 5) * videoQueue[0].height;
+    }
+    
+    //Make sure the scroll doesn't go below 0
+    if (yOffset < 0) {
+        yOffset = 0;
+    }
 }
 
 //Update the canvas display and dimensions
@@ -120,9 +192,11 @@ function UpdateCanvas() {
     //Animation callback
     requestAnimationFrame(UpdateCanvas);
     
+    //Set the height of the canvas
     canvasPlaylist.height = videoQueue.length * 50;
     canvasPlaylist.style.height = (videoQueue.length * 50).toString() + "px";
     
+    //If there are no videos in the playlist return
     if (videoQueue.length == 0) {return;}
     
     //Limit the height of the playlist to 5 videos
@@ -138,8 +212,5 @@ function UpdateCanvas() {
     //Draw all the videos in the queue
     for (let i=0; i<videoQueue.length; i++) {
         videoQueue[i].display(canvasCtx, i);
-        canvasPlaylist.onclick = function(e) {
-            videoQueue[i].testClick(MousePosition(canvasPlaylist, e));
-        }
     }
 }

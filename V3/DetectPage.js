@@ -13,11 +13,11 @@
 //Stop looping through the test
 let testURL = setInterval( function() {
     
+    if (document.readyState !== "complete") {return;}
+    
     let localURL = window.location.href;
     
 	if (localURL.includes("youtube.com/")) {
-        
-        console.log("Video Page");
         
         GetControlElements();
         OverlayUpdate();

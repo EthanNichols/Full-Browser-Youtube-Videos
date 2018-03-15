@@ -99,13 +99,16 @@ function OverlayClick() {
     let localURL = linkElement.pathname + linkElement.search;
     let imageSRC = linkElement.querySelector("img").src;
 
+    //Get the video title checked each parent element
     let parentCheck = linkElement;
     while (!parentCheck.querySelector("#video-title")) {
         parentCheck = parentCheck.parentElement;
     }
     
+    //Get the name of the video
     let name = parentCheck.querySelector("#video-title").innerHTML;
     
+    //Add the video to the playlist
     AddToQueue(imageSRC, name, localURL);
 }
 

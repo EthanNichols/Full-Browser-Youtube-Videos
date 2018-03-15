@@ -31,6 +31,8 @@ function SetVideo(link, autoplay = 0) {
     
     //Set the source of the video
     iframeVideo.src = src;
+    
+    iframeVideo.style.pointerEvents = null;
 }
 
 ///Get elements for the video
@@ -51,4 +53,5 @@ function GetVideoPageElements() {
     iframeVideo.style.width = "373px";
     iframeVideo.style.height = "210px";
     iframeVideo.style.border = "none";
+    iframeVideo.style.pointerEvents = "none";
 }
