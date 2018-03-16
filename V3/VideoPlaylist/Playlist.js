@@ -12,12 +12,17 @@
 
 //Queue of videos that will be watched
 let videoQueue = [];
+let currentVideo = 0;
 
 //The canvas and 2d context
 let canvasPlaylist;
 let canvasCtx;
 
+//The y offset of the video buttons
 let yOffset = 0;
+
+//Playlist control variables
+let loop = false;
 
 ///Video that has been added to the queue
 class QueuedVideo {
@@ -30,6 +35,7 @@ class QueuedVideo {
         this.image.src = imageSRC;
         this.name = name;
         this.URL = URL;
+        this.playing = false;
         
         //Distance between items in the playlist button
         this.padding = 1;
@@ -44,24 +50,48 @@ class QueuedVideo {
     //Display the video on the canvas
     display(ctx, queuePos) {
         
+        if (this.playing) {
+            ctx.fillStyle = "#282828";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+        
         this.y = this.height * queuePos - yOffset;
         
         //Display the image thumbnail
         ctx.drawImage(this.image, this.padding, this.y + this.padding, (this.height - this.padding * 2) * 1.8, this.height - this.padding * 2);
         
         //Display the name of the video
-        ctx.fillStyle = "white";
+        ctx.fillStyle = (this.playing) ? "white" : "black";
         ctx.font = "16px 'YouTube Noto'";
         ctx.fillText(this.name, (this.height - this.padding * 2) * 1.9, this.y + this.padding + 14);
     }
     
     //Test if the button is clicked
-    testClick(pos) {
+    click(pos) {
+        
+        if (this.playing) {return;}
         
         //Set the video url if the button is clicked
         if (pos.x > this.x && pos.x < this.x + this.width &&
            pos.y > this.y && pos.y < this.y + this.height) {
-            SetVideo(this.URL, 1);
+            this.play();
+        } else {
+            this.stop();
+        }
+    }
+    
+    play() {
+        SetVideo(this.URL, 1);
+        this.playing = true;
+    }
+    stop() {
+        this.playing = false;
+    }
+    
+    //Test if the mouse is hovering over the button
+    hover(pos) {
+        if (pos.x > this.x && pos.x < this.x + this.width &&
+           pos.y > this.y && pos.y < this.y + this.height) {
         }
     }
 }
@@ -153,7 +183,13 @@ function PlaylistClick(e) {
     
     //Test all the playlist buttons if they've been clicked
     for (let i=0; i<videoQueue.length; i++) {
-        videoQueue[i].testClick(mousePos);
+        videoQueue[i].click(mousePos);
+        
+        //If the video is player set the current playing video and return
+        if (videoQueue[i].playing) {
+            currentVideo = i;
+            return;
+        }
     }
 }
 
@@ -186,6 +222,22 @@ function PlaylistScroll(e) {
     }
 }
 
+///Play the next video in the queu
+function NextVideo() {
+    
+    //Stop the current video
+    videoQueue[currentVideo].stop();
+
+    //Get the next video
+    currentVideo = (currentVideo+1) % videoQueue.length;
+    
+    //Stop the playlist if loop isn't enabled
+    if (currentVideo == 0 && !loop) {return;} 
+    
+    //Play the next video
+    videoQueue[currentVideo].play();
+}
+
 //Update the canvas display and dimensions
 function UpdateCanvas() {
     
@@ -206,7 +258,7 @@ function UpdateCanvas() {
     }
     
     //Draw the background
-    canvasCtx.fillStyle = "black";
+    canvasCtx.fillStyle = "#fafafa";
     canvasCtx.fillRect(0, 0, canvasPlaylist.width, canvasPlaylist.height);
     
     //Draw all the videos in the queue
