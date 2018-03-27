@@ -36,6 +36,7 @@ class QueuedVideo {
         this.name = name;
         this.URL = URL;
         this.playing = false;
+        this.hovering = false;
         
         //Distance between items in the playlist button
         this.padding = 1;
@@ -57,6 +58,14 @@ class QueuedVideo {
             ctx.strokeRect(this.x, this.y, this.width, this.height);
         }
         
+        //Tint the video button if the mouse is hovering over it
+        if (this.hovering) {
+            ctx.fillStyle = "#888888";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+            console.log(this.name);
+        }
+        
+        //Set the offset of the video button
         this.y = this.height * queuePos - yOffset;
         
         //Display the image thumbnail
@@ -73,13 +82,11 @@ class QueuedVideo {
         
         //Set the video url if the button is clicked
         if (pos.x > this.x && pos.x < this.x + this.width &&
-           pos.y > this.y && pos.y < this.y + this.height) {
+        pos.y > this.y && pos.y < this.y + this.height) {
             this.play();
         } else {
             this.stop();
         }
-        
-        console.log(this.playing);
     }
     
     play() {
@@ -92,8 +99,13 @@ class QueuedVideo {
     
     //Test if the mouse is hovering over the button
     hover(pos) {
+        
+        //Set if the video button is being hovered over
         if (pos.x > this.x && pos.x < this.x + this.width &&
-           pos.y > this.y && pos.y < this.y + this.height) {
+        pos.y > this.y && pos.y < this.y + this.height) {
+            this.hovering = true;
+        } else {
+            this.hovering = false;
         }
     }
 }
@@ -126,12 +138,18 @@ function CreateCanvas() {
     canvasPlaylist.onmousewheel = PlaylistScroll;
     
     //Remove scrolling when hovering over the playlist canvas
-    canvasPlaylist.onmousemove = function() {
+    canvasPlaylist.onmousemove = function(e) {
         document.querySelector("body").style.overflow = "hidden";
+        for (let i=0; i<videoQueue.length; i++) {
+            videoQueue[i].hover(MousePosition(canvasPlaylist, e));
+        }
     }
     //Enable hovering when the mouse leaves the canvas
-    canvasPlaylist.onmouseout = function() {
+    canvasPlaylist.onmouseout = function(e) {
         document.querySelector("body").style.overflow = null;
+        for (let i=0; i<videoQueue.length; i++) {
+            videoQueue[i].hover(MousePosition(canvasPlaylist, e));
+        }
     }
     
     //Run the update canvas function

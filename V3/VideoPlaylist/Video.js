@@ -10,6 +10,9 @@
 
 "use strict"
 
+//Constant link to the tutorial video
+const tutVideo = "Xv7Y7-Rm_iM";
+
 //Iframe that holds the video that doesn't stop playing
 let iframeVideo, iVideo, innerDoc;
 
@@ -46,6 +49,23 @@ function SetVideo(link = null, autoplay = 0) {
     }
 }
 
+///Play the tutorial video if the extension
+///Is being used for the first time
+function PlayTutorialVideo() {
+    
+    //Get the stored information if the video played
+    chrome.storage.local.get("playedTut", function(r){
+        
+        //If the tutorial video didn't play, play it
+        if (!r.playedTut) {
+            SetVideo(tutVideo, 1);
+        }
+    });
+    
+    //Set that the video played
+    chrome.storage.local.set({"playedTut": true});
+}
+
 ///Get elements for the video
 function GetVideoPageElements() {
     
@@ -66,11 +86,17 @@ function GetVideoPageElements() {
     iframeVideo.style.border = "none";
     iframeVideo.style.pointerEvents = "none";
     
+    //Set the video player to play nothing
     SetVideo();
     
+    //Get the inner content of the iframe
     innerDoc = iframeVideo.contentDocument || iframeVideo.contentWindow.document;
     
+    //Update the video
     UpdateVideo();
+    
+    //Test if the tutorial video should play
+    PlayTutorialVideo();
 }
 
 ///Get the most updated video in the iframe
@@ -85,16 +111,22 @@ function GetInnerVideo() {
     iVideo = innerDoc.querySelector("video");
 }
 
+///Update information about the video
 function UpdateVideo() {
+    
+    //Set animation frame callback
     requestAnimationFrame(UpdateVideo);
     
+    //Get the video inside of the iframe
     GetInnerVideo();
     
-    if (iVideo == null) {
-        return;
-    }
+    //Return if there is no video to access
+    if (iVideo == null) {return;}
     
+    //Test if the video ended, and the last video hasn't played
     if (iVideo.ended && prevVid != iVideo) {
+        
+        //Play the next video in the playlist
         NextVideo();
         prevVid = iVideo;
     }
