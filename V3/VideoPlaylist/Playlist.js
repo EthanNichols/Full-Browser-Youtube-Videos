@@ -50,9 +50,11 @@ class QueuedVideo {
     //Display the video on the canvas
     display(ctx, queuePos) {
         
+        ctx.fillStyle = "#282828";
         if (this.playing) {
-            ctx.fillStyle = "#282828";
             ctx.fillRect(this.x, this.y, this.width, this.height);
+        } else {
+            ctx.strokeRect(this.x, this.y, this.width, this.height);
         }
         
         this.y = this.height * queuePos - yOffset;
@@ -69,8 +71,6 @@ class QueuedVideo {
     //Test if the button is clicked
     click(pos) {
         
-        if (this.playing) {return;}
-        
         //Set the video url if the button is clicked
         if (pos.x > this.x && pos.x < this.x + this.width &&
            pos.y > this.y && pos.y < this.y + this.height) {
@@ -78,6 +78,8 @@ class QueuedVideo {
         } else {
             this.stop();
         }
+        
+        console.log(this.playing);
     }
     
     play() {
@@ -183,12 +185,20 @@ function PlaylistClick(e) {
     
     //Test all the playlist buttons if they've been clicked
     for (let i=0; i<videoQueue.length; i++) {
+        
+        //Skip the video if it's already playing
+        if (videoQueue[i].playing) {continue;}
+        
         videoQueue[i].click(mousePos);
         
         //If the video is player set the current playing video and return
         if (videoQueue[i].playing) {
+            
+            //Stop the current video if another video is clicked
+            if (currentVideo != i) {
+                videoQueue[currentVideo].stop();
+            }
             currentVideo = i;
-            return;
         }
     }
 }
